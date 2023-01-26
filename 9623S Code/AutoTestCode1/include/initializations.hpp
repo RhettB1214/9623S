@@ -1,0 +1,13 @@
+#include "main.h"
+#include "definitions.hpp"
+
+using namespace okapi;
+
+extern Motor intakeMotor;
+extern Motor rollerMotor;
+extern MotorGroup cataMotors;
+extern Controller master;
+extern pros::ADIDigitalIn limitSwitch;
+extern pros::ADIDigitalOut endgamePiston;
+extern pros::ADIDigitalOut cataPiston;
+

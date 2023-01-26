@@ -1,0 +1,121 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 2.167466700533334,
+        "y": 0.3490871849416669
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.506293650149461,
+        "y": 0.3490871849416669
+      },
+      "holonomicAngle": 90.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.8187487619916674,
+        "y": 0.33866667195833333
+      },
+      "prevControl": {
+        "x": 2.8291177550864806,
+        "y": 0.33866667195833333
+      },
+      "nextControl": {
+        "x": 2.808379768896854,
+        "y": 0.33866667195833333
+      },
+      "holonomicAngle": 90.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.6308102818916674,
+        "y": 1.636020538383334
+      },
+      "prevControl": {
+        "x": 1.9781080013185834,
+        "y": 1.391625846934764
+      },
+      "nextControl": {
+        "x": 1.3494564313416668,
+        "y": 1.8340102850666673
+      },
+      "holonomicAngle": 45.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.1462564281666665,
+        "y": 1.917374388933334
+      },
+      "prevControl": {
+        "x": 1.272593846036406,
+        "y": 1.7736276166448814
+      },
+      "nextControl": null,
+      "holonomicAngle": -45.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "maxVelocity": 1.0,
+  "maxAcceleration": 1.0,
+  "isReversed": null,
+  "markers": [
+    {
+      "position": 1.0,
+      "names": [
+        "Roller"
+      ]
+    },
+    {
+      "position": 2.0,
+      "names": [
+        "Shoot Cata"
+      ]
+    },
+    {
+      "position": 2.25,
+      "names": [
+        "Turn Intake On"
+      ]
+    }
+  ]
+}
