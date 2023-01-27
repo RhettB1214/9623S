@@ -26,13 +26,11 @@ void redClose()
     shoot();
     pros::delay(125);
     load();
-    pros::delay(125);
     controller->setTarget({0_in, 0_in, -90_deg});
     controller->waitUntilSettled();
-    controller->setTarget({-48_in, -48_in, 0_deg});
+    controller->setTarget({48_in, -48_in, 0_deg});
     controller->waitUntilSettled();
     controller->setTarget({0_in, 0_in, 135_deg});
-    controller->waitUntilSettled();
 
 }
 
@@ -46,7 +44,25 @@ void redFar()
 //Blue Close Side Auton Function
 void blueClose()
 {
-
+    controller->setTarget({5_in, 0_in, 0_deg});
+    controller->waitUntilSettled();
+    rollerMotor.moveVelocity(200);
+    pros::delay(500);
+    rollerMotor.moveVelocity(0);
+    controller->setTarget({0_in, 0_in, -45_deg});
+    controller->waitUntilSettled();
+    controller->setTarget({-48_in, 48_in, 0_deg});
+    controller->waitUntilSettled();
+    controller->setTarget({0_in, 0_in, 90_deg});
+    controller->waitUntilSettled();
+    shoot();
+    pros::delay(125);
+    load();
+    controller->setTarget({0_in, 0_in, -90_deg});
+    controller->waitUntilSettled();
+    controller->setTarget({-48_in, 48_in, 0_deg});
+    controller->waitUntilSettled();
+    controller->setTarget({0_in, 0_in, 135_deg});
 }
 
 

@@ -65,22 +65,22 @@ void autonomous()
 {
 	switch(autonID)
 	{
-		case 1:
+	case 1:
 			redClose();
 			break;
-		case 2:
+	case 2:
 			redFar();
 			break;
-		case 3:
+	case 3:
 			blueClose();
 			break;
-		case 4:
+	case 4:
 			blueFar();
 			break;
-		case 5:
+	case 5:
 			skills();
 			break;
-		case 0:
+	case 0:
 			opcontrol();
 			break;
 	}
