@@ -30,6 +30,16 @@ std::shared_ptr<HolonomicLib::AsyncHolonomicChassisController> controller = Holo
     .withTurnGains(
         {0.05, 0.0, 0.00065, 0.0} // Turn gains
     )
+	.withDistSettleParameters(
+        0.5_in, // Max error
+        2.0_in / 1_s, // Max derivative
+        100_ms // Wait time
+    )
+    .withTurnSettleParameters(
+        5_deg, // Max error
+        20_deg / 1_s, // Max derivative
+        100_ms // Wait time
+    )
     .build();
 	
 
