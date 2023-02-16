@@ -141,7 +141,7 @@ selectionLabelStyle.text.color = LV_COLOR_WHITE;
 
 //Creates Red Close Side Button
 redCloseButton = lv_btn_create(lv_scr_act(), NULL);
-lv_obj_set_free_num(redCloseButton, 1); /*Set a unique number for the button*/
+lv_obj_set_free_num(redCloseButton, 1); 
 lv_btn_set_action(redCloseButton, LV_BTN_ACTION_CLICK, btn_click_action); //set function to be called when button is pressed
 lv_btn_set_style(redCloseButton, LV_BTN_STYLE_REL, &redButtonStyleREL); //set the released style
 lv_btn_set_style(redCloseButton, LV_BTN_STYLE_PR, &redButtonStylePR); //set the pressed style
@@ -150,7 +150,7 @@ lv_obj_align(redCloseButton, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 10); //align to top
 
 //Creates Red Far Side Button
 redFarButton = lv_btn_create(lv_scr_act(), NULL);
-lv_obj_set_free_num(redFarButton, 2); /*Set a unique number for the button*/
+lv_obj_set_free_num(redFarButton, 2); 
 lv_btn_set_action(redFarButton, LV_BTN_ACTION_CLICK, btn_click_action); //set function to be called when button is pressed
 lv_btn_set_style(redFarButton, LV_BTN_STYLE_REL, &redButtonStyleREL); //set the released style
 lv_btn_set_style(redFarButton, LV_BTN_STYLE_PR, &redButtonStylePR); //set the pressed style
@@ -159,7 +159,7 @@ lv_obj_align(redFarButton, NULL, LV_ALIGN_IN_TOP_RIGHT, -10, 10); //align to top
 
 //Creates Blue Close Side Auton Button
 blueCloseButton = lv_btn_create(lv_scr_act(), NULL);
-lv_obj_set_free_num(blueCloseButton, 3); /*Set a unique number for the button*/
+lv_obj_set_free_num(blueCloseButton, 3); 
 lv_btn_set_action(blueCloseButton, LV_BTN_ACTION_CLICK, btn_click_action); //set function to be called when button is pressed
 lv_btn_set_style(blueCloseButton, LV_BTN_STYLE_REL, &blueButtonStyleREL); //set the released style
 lv_btn_set_style(blueCloseButton, LV_BTN_STYLE_PR, &blueButtonStylePR); //set the pressed style
@@ -168,7 +168,7 @@ lv_obj_align(blueCloseButton, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 10, 10); //align to
 
 //Creates Blue Far Side Auton Button
 blueFarButton = lv_btn_create(lv_scr_act(), NULL);
-lv_obj_set_free_num(blueFarButton, 4); /*Set a unique number for the button*/
+lv_obj_set_free_num(blueFarButton, 4); 
 lv_btn_set_action(blueFarButton, LV_BTN_ACTION_CLICK, btn_click_action); //set function to be called when button is pressed
 lv_btn_set_style(blueFarButton, LV_BTN_STYLE_REL, &blueButtonStyleREL); //set the released style
 lv_btn_set_style(blueFarButton, LV_BTN_STYLE_PR, &blueButtonStylePR); //set the pressed style
@@ -177,7 +177,7 @@ lv_obj_align(blueFarButton, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -10, 10); //align to
 
 //Creates Skills Button
 skillsButton = lv_btn_create(lv_scr_act(), NULL);
-lv_obj_set_free_num(skillsButton, 5); /*Set a unique number for the button*/
+lv_obj_set_free_num(skillsButton, 5); 
 lv_btn_set_action(skillsButton, LV_BTN_ACTION_CLICK, btn_click_action); //set function to be called when button is pressed
 lv_btn_set_style(skillsButton, LV_BTN_STYLE_REL, &skillsButtonStyleREL); //set the released style
 lv_btn_set_style(skillsButton, LV_BTN_STYLE_PR, &skillsButtonStylePR); //set the pressed style
