@@ -3,3 +3,6 @@ extern bool shouldIntakeOuttake;
 extern bool lastKnownStateOfButtonIntake;
 extern bool lastKnownStateOfButtonOuttake;
 extern int autonID;
+extern float kP;
+extern float kI;
+extern float kD;
