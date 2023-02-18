@@ -62,7 +62,7 @@ void drve(int lastIMUCheck)
 
  void shoot()
 {
-	lastIMUCheck = imu.get() + 90;
+	lastIMUCheck = imu.get();
 	while(limitSwitch.get_value() == 1)
 	{
 		cataMotors.moveVoltage(12000);
@@ -73,7 +73,7 @@ void drve(int lastIMUCheck)
 
 void load()
 {
-	lastIMUCheck = imu.get() + 90;
+	lastIMUCheck = imu.get();
 	while (limitSwitch.get_value() == 0) 
 	{
 		cataMotors.moveVoltage(12000);
@@ -186,7 +186,7 @@ void autonomous()
 void opcontrol() 
 {
 
-	lastIMUCheck = imu.get() + 90;
+	lastIMUCheck = imu.get();
 	
 	while (true) 
 	{
@@ -246,6 +246,26 @@ void opcontrol()
 	   if(master.getDigital(R1) == 0 && master.getDigital(R2) == 0)
 	   {
 		intakeMotors.moveVoltage(0);
+	   }
+
+
+	   if (master.getDigital(X) && master.getDigital(Up))
+	   {
+		   blockerDeployed = true;
+		   blockerPiston.set_value(1);
+		   pros::delay(15);
+		   blockerPiston.set_value(0);
+		   pros::delay(15);
+		   blockerPiston.set_value(1);
+		   pros::delay(15);
+		   blockerPiston.set_value(0);
+		   pros::delay(15);
+		   blockerPiston.set_value(1);
+	   }
+
+	   if (master.getDigital(L1) && master.getDigital(L2) && master.getDigital(R1) && master.getDigital(R2) && blockerDeployed == true)
+	   {
+		   endgamePiston.set_value(1);
 	   }
 	}
 	

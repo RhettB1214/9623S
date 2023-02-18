@@ -9,6 +9,6 @@ extern MotorGroup cataMotors;
 extern Controller master;
 extern pros::ADIDigitalIn limitSwitch;
 extern pros::ADIDigitalOut endgamePiston;
-extern pros::ADIDigitalOut cataPiston;
+extern pros::ADIDigitalOut blockerPiston;
 extern IMU imu;
 extern MotorGroup intakeMotors;

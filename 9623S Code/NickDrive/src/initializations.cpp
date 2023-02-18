@@ -22,6 +22,7 @@ okapi::MotorGroup(intakeMotors)({intakeMotor, rollerMotor});
 
 pros::ADIDigitalIn limitSwitch({{21, 'A'}});
 pros::ADIDigitalOut endgamePiston(ENDGAME_PISTON);
+pros::ADIDigitalOut blockerPiston(BLOCKER_PISTON);
 
 IMU imu(IMU_PORT);
 
