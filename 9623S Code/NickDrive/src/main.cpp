@@ -7,6 +7,7 @@
 using namespace okapi;
 
 //This builder builds a odometry enabled chassis controller using OkapiLib
+//This builder builds a odometry enabled chassis controller using OkapiLib
 std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
 	.withMotors(
 		FL_DRIVE, 
@@ -14,12 +15,28 @@ std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
 		BR_DRIVE,
 		BL_DRIVE
 	)
-	.withDimensions(REGBOX, {{3.25_in, 9.5_in}, imev5GreenTPR})
+	
 	.withSensors(
 		RotationSensor{LEFT_ODOM},
         RotationSensor{RIGHT_ODOM},
         RotationSensor{BACK_ODOM}
 	)
+	.withClosedLoopControllerTimeUtil(50, 5, 250_ms)
+	.withLogger(
+		std::make_shared<Logger>(
+			TimeUtilFactory::createDefault().getTimer(),
+			"/ser/sout",
+			Logger::LogLevel::debug
+		)
+	)
+	.withMaxVelocity(150)
+	/*.withGains({0.0015, 0.0, 0.000, 0.0},
+		   	   {0.001, 0.0, 0.000, 0.0},
+		       {0.001, 0.0, 0.000, 0.0})
+	.withDerivativeFilters(std::make_unique<AverageFilter<3>>(),
+						   std::make_unique<AverageFilter<3>>(),
+						   std::make_unique<AverageFilter<3>>())*/
+	.withDimensions(REGBOX, {{3.25_in, 9.5_in}, imev5GreenTPR})
 	.withOdometry({{2.75_in, 12.5_in, 1_in, 2.75_in}, quadEncoderTPR}, StateMode::CARTESIAN)
 	.buildOdometry();
 
@@ -56,13 +73,12 @@ void drve(int lastIMUCheck)
 	master.getAnalog(ControllerAnalog::leftY),
 	master.getAnalog(ControllerAnalog::leftX),
 	master.getAnalog(ControllerAnalog::rightX),
-	(imu.get()-lastIMUCheck)*degree,
+	(imu.get())*degree,
 	0.05);
  }
 
  void shoot()
 {
-	lastIMUCheck = imu.get();
 	while(limitSwitch.get_value() == 1)
 	{
 		cataMotors.moveVoltage(12000);
@@ -73,7 +89,6 @@ void drve(int lastIMUCheck)
 
 void load()
 {
-	lastIMUCheck = imu.get();
 	while (limitSwitch.get_value() == 0) 
 	{
 		cataMotors.moveVoltage(12000);
@@ -144,20 +159,21 @@ void competition_initialize()
 void autonomous() 
 {
 	chassis->setState({0_ft, 0_ft, 0_deg});
-	chassis->driveToPoint({2_ft, 0_ft});
-	chassis->turnToAngle(-115_deg);
-	chassis->moveDistanceAsync(-1.5_ft);
-	pros::delay(250);
+	chassis->driveToPoint({1.875_ft, 0_ft});
+	chassis->turnToAngle(-125_deg);
+	chassis->moveDistanceAsync(-3_ft);
+	pros::delay(450);
 	rollerMotor.moveRelative(200, 200);
-	pros::delay(250);
+	pros::delay(350);
 	chassis->stop();
-	chassis->moveDistance(6_in);
-	chassis->driveToPoint({-1.75_ft, -2.5_ft});
+	chassis->moveDistance(4_in);
+	chassis->turnAngle(-45_deg);
+	chassis->moveDistance(4.75_ft);
+	chassis->setMaxVelocity(100);
+	chassis->turnAngle(132.5_deg);
 	chassis->setMaxVelocity(50);
-	chassis->turnToAngle(36_deg);
-	chassis->moveDistanceAsync(8_in);
+	chassis->moveDistance(-8_in);
 	rollerMotor.moveVoltage(12000);
-	chassis->waitUntilSettled();
 	autonShoot();
 	pros::delay(15);
 	load();
@@ -194,7 +210,7 @@ void opcontrol()
 		master.getAnalog(ControllerAnalog::leftY),
 		master.getAnalog(ControllerAnalog::leftX),
 		master.getAnalog(ControllerAnalog::rightX),
-		(imu.get() - lastIMUCheck) *degree,
+		(imu.get()) *degree,
 		0.05);
 
 
@@ -223,7 +239,7 @@ void opcontrol()
 
 
 		//Intake Control
-       if (master.getDigital(R1))
+       if (master.getDigital(R1)&& limitSwitch.get_value() == 1)
 	   {
 		intakeMotors.moveVoltage(12000);
 		if (master.getDigital(B))
@@ -233,7 +249,7 @@ void opcontrol()
 			load();
 		}
 	   }
-	   if(master.getDigital(R2))
+	   if(master.getDigital(R2) && limitSwitch.get_value() == 1)
 	   {
 		intakeMotors.moveVoltage(-12000);
 		if (master.getDigital(B))
@@ -253,17 +269,17 @@ void opcontrol()
 	   {
 		   blockerDeployed = true;
 		   blockerPiston.set_value(1);
-		   pros::delay(15);
+		   pros::delay(50);
 		   blockerPiston.set_value(0);
-		   pros::delay(15);
+		   pros::delay(50);
 		   blockerPiston.set_value(1);
-		   pros::delay(15);
+		   pros::delay(50);
 		   blockerPiston.set_value(0);
-		   pros::delay(15);
+		   pros::delay(50);
 		   blockerPiston.set_value(1);
 	   }
 
-	   if (master.getDigital(L1) && master.getDigital(L2) && master.getDigital(R1) && master.getDigital(R2) && blockerDeployed == true)
+	   if (master.getDigital(L1) && master.getDigital(L2) && master.getDigital(R1) && master.getDigital(R2))
 	   {
 		   endgamePiston.set_value(1);
 	   }

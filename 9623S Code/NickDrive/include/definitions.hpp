@@ -24,7 +24,7 @@
 //Three Wire Port Definitions
 #define THREE_WIRE_EXPANDER 1
 #define LIMIT_SWITCH 'A'
-#define ENDGAME_PISTON 'G'
+#define ENDGAME_PISTON 'F'
 #define BLOCKER_PISTON 'H'
 
 
