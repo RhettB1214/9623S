@@ -12,8 +12,15 @@ Controller(master);
 
 Motor cataMotor1(LCATA_MOTOR, false, TORQUEBOX, DEGREES);
 Motor cataMotor2(RCATA_MOTOR, true, TORQUEBOX, DEGREES);
-Motor intakeMotor(INTAKE_MOTOR, false, REGBOX, DEGREES);
+Motor intakeMotor(INTAKE_MOTOR, false, SPEEDBOX, DEGREES);
 Motor rollerMotor(ROLLER_MOTOR, false, REGBOX, DEGREES);
+Motor leftFront = Motor(FL_DRIVE, false, REGBOX, DEGREES);
+Motor rightFront = Motor(-FR_DRIVE, true, REGBOX, DEGREES);
+Motor leftBack = Motor(BL_DRIVE, false, REGBOX, DEGREES);
+Motor rightBack = Motor(-BR_DRIVE, true, REGBOX, DEGREES);
+RotationSensor leftEnc = RotationSensor(LEFT_ODOM);
+RotationSensor rightEnc = RotationSensor(RIGHT_ODOM);
+RotationSensor midEnc = RotationSensor(BACK_ODOM);
 
 
 okapi::MotorGroup(cataMotors)({cataMotor1, cataMotor2});
