@@ -67,7 +67,7 @@ std::shared_ptr<HolonomicLib::AsyncHolonomicChassisController> controller = Holo
 //This casts the first chassis controller to a X-Drive specific chassis model
 std::shared_ptr<ThreeEncoderXDriveModel> model = std::static_pointer_cast<ThreeEncoderXDriveModel> (chassis->getModel());
 
-void drve(int lastIMUCheck)
+void drve()
  {
 	model->fieldOrientedXArcade(
 	master.getAnalog(ControllerAnalog::leftY),
@@ -82,7 +82,7 @@ void drve(int lastIMUCheck)
 	while(limitSwitch.get_value() == 1)
 	{
 		cataMotors.moveVoltage(12000);
-		drve(lastIMUCheck);
+		drve();
 	}
 	cataMotors.moveVelocity(0);
 }
@@ -92,7 +92,7 @@ void load()
 	while (limitSwitch.get_value() == 0) 
 	{
 		cataMotors.moveVoltage(12000);
-		drve(lastIMUCheck);
+		drve();
 	}
 	cataMotors.moveVelocity(0);
 	
@@ -115,6 +115,13 @@ void autonShoot()
  */
 void initialize() 
 {
+	Logger::setDefaultLogger(
+		std::make_shared<Logger>(
+			TimeUtilFactory::createDefault().getTimer(),
+			"/ser/sout",
+			Logger::LogLevel::debug
+		)
+	);
 	cataMotors.setBrakeMode(AbstractMotor::brakeMode::hold);
 	load();
 	
@@ -158,8 +165,8 @@ void competition_initialize()
  */
 void autonomous() 
 {
-	chassis->setState({0_ft, 0_ft, 0_deg});
-	chassis->driveToPoint({1.875_ft, 0_ft});
+	chassis->setState({0_in, 0_in, 0_deg});
+	chassis->moveDistance(1.75_ft);
 	chassis->turnToAngle(-125_deg);
 	chassis->moveDistanceAsync(-3_ft);
 	pros::delay(450);
@@ -167,13 +174,14 @@ void autonomous()
 	pros::delay(350);
 	chassis->stop();
 	chassis->moveDistance(4_in);
-	chassis->turnAngle(-45_deg);
+	chassis->turnAngle(-50_deg);
 	chassis->moveDistance(4.75_ft);
 	chassis->setMaxVelocity(100);
-	chassis->turnAngle(132.5_deg);
+	chassis->turnAngle(123_deg);
 	chassis->setMaxVelocity(50);
-	chassis->moveDistance(-8_in);
+	chassis->moveDistance(-6_in);
 	rollerMotor.moveVoltage(12000);
+	pros::delay(500);
 	autonShoot();
 	pros::delay(15);
 	load();
@@ -202,7 +210,7 @@ void autonomous()
 void opcontrol() 
 {
 
-	lastIMUCheck = imu.get();
+	
 	
 	while (true) 
 	{
