@@ -1,5 +1,7 @@
 #include "main.h"
 #include "ARMS/config.h"
+#include "ARMS/flags.h"
+#include "ARMS/selector.h"
 #include "initializations.hpp"
 #include "definitions.hpp"
 
@@ -67,26 +69,22 @@ void autonShoot()
 
 void shortSideAuton()
 {
-	arms::chassis::move({24, 12, -90});
-	arms::chassis::waitUntilFinished(0.5);
-	chassis->moveDistanceAsync(-3_ft);
-	pros::delay(450);
-	rollerMotor.moveRelative(200, 200);
-	pros::delay(350);
-	chassis->stop();
-	chassis->moveDistance(4_in);
-	chassis->waitUntilSettled();
-	arms::chassis::move({42, 18, -45});
-	arms::chassis::move(1.75);
-	pros::delay(750);
-	autonShoot();
-	pros::delay(30);
-	load();
+	
+}
 
-
+void longSideAuton()
+{
 
 }
 
+void progSkills()
+{
+	
+	
+
+	
+
+}
 
 
 
@@ -107,6 +105,7 @@ void initialize()
 														)
 			   				);
 	cataMotors.setBrakeMode(AbstractMotor::brakeMode::hold);
+	load();
 
 
 
@@ -134,6 +133,7 @@ void disabled()
 void competition_initialize()
 {
 
+
 }
 
 
@@ -150,7 +150,27 @@ void competition_initialize()
  */
 void autonomous() 
 {
-	shortSideAuton();
+	chassis->moveDistanceAsync(-1.5_ft);
+	pros::delay(250);
+	rollerMotor.moveRelative(250, 200);
+	pros::delay(250);
+	chassis->stop();
+	chassis->moveDistance(4_in);
+	intakeMotors.moveVoltage(12000);
+	pros::delay(50);
+	chassis->turnAngle(180_deg);
+	chassis->setMaxVelocity(100);
+	chassis->moveDistance(-1.25_ft);
+	intakeMotors.moveVelocity(0);
+	chassis->setMaxVelocity(200);
+	chassis->turnAngle(-65_deg);
+	chassis->moveDistanceAsync(-3.5_ft);
+	pros::delay(300);
+	rollerMotor.moveRelative(250, 200);
+	pros::delay(450);
+	chassis->stop();
+
+	
 }
 
 /**

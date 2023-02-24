@@ -7,11 +7,11 @@
 namespace arms {
 
 // Debug
-#define ODOM_DEBUG 0
+#define ODOM_DEBUG 1
 
 // Negative numbers mean reversed motor
-#define LEFT_MOTORS 6, 5
-#define RIGHT_MOTORS -8, -7
+#define LEFT_MOTORS 0, 0
+#define RIGHT_MOTORS 0, 0
 #define GEARSET pros::E_MOTOR_GEAR_200 // RPM of chassis motors
 
 // Ticks per inch
@@ -35,11 +35,11 @@ namespace arms {
 #define SETTLE_THRESH_LINEAR .5      // amount of linear movement for settling
 #define SETTLE_THRESH_ANGULAR 1      // amount of angular movement for settling
 #define SETTLE_TIME 250      // amount of time to count as settled
-#define LINEAR_KP 1
+#define LINEAR_KP 0
 #define LINEAR_KI 0
 #define LINEAR_KD 0
 #define TRACKING_KP 60		 // point tracking turning strength
-#define ANGULAR_KP 1
+#define ANGULAR_KP 0
 #define ANGULAR_KI 0
 #define ANGULAR_KD 0
 #define MIN_ERROR 5          // Minimum distance to target before angular componenet is disabled
@@ -48,7 +48,7 @@ namespace arms {
 // Auton selector configuration constants
 #define AUTONS "Short Side", "Long Side", "Do Nothing" // Names of autonomi, up to 10
 #define HUE 0     // Color of theme from 0-359(H part of HSV)
-#define DEFAULT 1 // Default auton selected
+#define DEFAULT 0 // Default auton selected
 
 // Initializer
 inline void init() {
