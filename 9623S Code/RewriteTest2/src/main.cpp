@@ -83,6 +83,7 @@ void initialize()
 	cataMotors.setBrakeMode(AbstractMotor::brakeMode::hold);
 	load();
 	
+	
 }
 
 /**
@@ -154,7 +155,10 @@ void autonomous()
 	autonShoot();
 	pros::delay(25);
 	chassis->moveDistanceAsync(-1.625_ft);
+	pros::delay(25);
 	load();
+	pros::delay(25);
+	chassis->stop();
 	chassis->setMaxVelocity(100);
 	chassis->turnAngle(-135_deg);
 	intakeMotors.moveVoltage(12000);
@@ -171,10 +175,11 @@ void autonomous()
 	autonShoot();
 	pros::delay(25);
 	load();
-	
+
+
 
 	
-	
+
 
 }
 
