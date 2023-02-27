@@ -123,37 +123,37 @@ void competition_initialize()
  */
 void autonomous() 
 {
-	chassis->moveDistanceAsync(-1_ft);
-	pros::delay(250);
-	rollerMotor.moveRelative(250, 200);
-	pros::delay(250);
-	chassis->stop();
-	chassis->moveDistance(4_in);
-	intakeMotors.moveVoltage(12000);
-	pros::delay(50);
-	chassis->turnAngle(180_deg);
-	chassis->setMaxVelocity(100);
-	chassis->moveDistance(-1.325_ft);
-	intakeMotors.moveVelocity(0);
-	chassis->setMaxVelocity(200);
-	chassis->turnAngle(-55_deg);
-	chassis->moveDistanceAsync(-3_ft);
-	pros::delay(450);
-	rollerMotor.moveRelative(250, 200);
-	pros::delay(450);
-	chassis->stop();
-	chassis->moveDistance(6_in);
-	chassis->waitUntilSettled();
-	intakeMotors.moveVoltage(12000);
-	pros::delay(50);
-	chassis->turnAngle(-112.5_deg);
-	chassis->setMaxVelocity(125);
-	chassis->moveDistance(3.5_ft);
-	chassis->waitUntilSettled();
-	intakeMotors.moveVelocity(0);
-	pros::delay(50);
-	autonShoot();
-	pros::delay(25);
+	chassis->moveDistanceAsync(-1_ft); //Drives the Robot back into the roller Asyncronsly 
+	pros::delay(250); //Waits 250 milliseconds
+	rollerMotor.moveRelative(250, 200); //Spins the Roller Motor 250 degrees
+	pros::delay(250); //Waits 250 milliseconds
+	chassis->stop(); //Stops the Chassis
+	chassis->moveDistance(4_in); //Drives the Chassis 4 inches off of the Roller
+	intakeMotors.moveVoltage(12000); //Turns the intake system on
+	pros::delay(50); //Waits for 50 milliseconds 
+	chassis->turnAngle(180_deg); //Turns the robot 135 degrees because it accounts for error in the robot
+	chassis->setMaxVelocity(100); //Sets the robots maximum Chassis velocities 100 RPM
+	chassis->moveDistance(-1.325_ft); //Drives the Robot 1.325 feet and picks up the first disc
+	intakeMotors.moveVelocity(0); //Turns the intake off
+	chassis->setMaxVelocity(200); //Sets the Maximum chassis velocity to 200 RPM
+	chassis->turnAngle(-55_deg); //Turns the robot 45 degrees to the left accounting for error in the robot
+	chassis->moveDistanceAsync(-3_ft); //Moves the robot 3 feet backwards into the roller
+	pros::delay(450); //waits 450 milliseconds to give the robot time to make it to the roller
+	rollerMotor.moveRelative(250, 200); //Spins the Roller motor 250 degrees
+	pros::delay(450); //Waits 450 milliseconds giving the robot time to spin the roller
+	chassis->stop(); //Stops the chassis
+	chassis->moveDistance(6_in); //Moves the robot 6 inches off the roller
+	chassis->waitUntilSettled(); //Waits until the chassis has stopped moving
+	intakeMotors.moveVoltage(12000); //Turns the intake system on
+	pros::delay(50); //Waits 50 milliseconds
+	chassis->turnAngle(-112.5_deg); //Turns the robot 90 degrees to the left accounting for error in the robot
+	chassis->setMaxVelocity(125); //Sets the maximum chassis velocity to 125 RPM
+	chassis->moveDistance(3.5_ft); //Drives the robot forward 3.5 feet
+	chassis->waitUntilSettled();//Waits untill the robot has stopped moving
+	intakeMotors.moveVelocity(0); //Turns the intake off to help with shot grouping
+	pros::delay(50); //Waits 50 milliseconds
+	autonShoot(); //Fires the first volley of discs
+	pros::delay(25); //waits 25 milliseconds
 	chassis->moveDistanceAsync(-1.625_ft);
 	pros::delay(25);
 	load();
@@ -167,7 +167,6 @@ void autonomous()
 	chassis->moveDistance(-2.5_ft);
 	chassis->turnAngle(120_deg);
 	chassis->moveDistance(0.5_ft);
-	
 	chassis->waitUntilSettled();
 	pros::delay(1000);
 	intakeMotors.moveVelocity(0);
