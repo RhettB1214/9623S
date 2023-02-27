@@ -83,8 +83,6 @@ void shortSideAuton()
 	pros::delay(30);
 	load();
 
-
-
 }
 
 
@@ -150,7 +148,35 @@ void competition_initialize()
  */
 void autonomous() 
 {
-	shortSideAuton();
+	if(arms::selector::auton == 1)
+	{
+		shortSideAuton();
+	}
+	if(arms::selector::auton == 2)
+	{
+		//longSideAuton();
+	}
+	if(arms::selector::auton == 3)
+	{
+		
+	}
+	if(arms::selector::auton == -1)
+	{
+		shortSideAuton();
+	}
+	if(arms::selector::auton == -2)
+	{
+		//longSideAuton();
+	}
+	if(arms::selector::auton == -3)
+	{
+		
+	}
+	if(arms::selector::auton == 0)
+	{
+		//progSkills();
+	}
+
 }
 
 /**
