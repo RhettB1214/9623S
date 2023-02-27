@@ -47,61 +47,41 @@ std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
 	.buildOdometry();
 
 
-//This casts the previously built chassis controller to one that can be ran asynchronously with other processes
-std::shared_ptr<HolonomicLib::AsyncHolonomicChassisController> controller = HolonomicLib::AsyncHolonomicChassisControllerBuilder(chassis)
-    // PID gains (must be tuned for your robot)
-    .withDistGains(
-        {0.05, 0.0, 0.00065, 0.0} // Translation gains
-    )
-    .withTurnGains(
-        {0.05, 0.0, 0.00065, 0.0} // Turn gains
-    )
-	.withDistSettleParameters(
-        0.5_in, // Max error
-        2.0_in / 1_s, // Max derivative
-        100_ms // Wait time
-    )
-    .withTurnSettleParameters(
-      
-	   - 5_deg, // Max error
-        20_deg / 1_s, // Max derivative
-        100_ms // Wait time
-    )
-    .build();
+
 	
 
 
 //This casts the first chassis controller to a X-Drive specific chassis model
 std::shared_ptr<ThreeEncoderXDriveModel> model = std::static_pointer_cast<ThreeEncoderXDriveModel> (chassis->getModel());
 
-void drve(int lastIMUCheck)
+void drve()
  {
 	model->fieldOrientedXArcade(
 	master.getAnalog(ControllerAnalog::leftY),
 	master.getAnalog(ControllerAnalog::leftX),
 	master.getAnalog(ControllerAnalog::rightX),
-	(imu.get()-lastIMUCheck)*degree,
+	(imu.get())*degree,
 	0.05);
  }
 
 void shoot()
 {
-	lastIMUCheck = imu.get() + 90;
+	
 	while(limitSwitch.get_value() == 1)
 	{
 		cataMotors.moveVoltage(12000);
-		drve(lastIMUCheck);
+		drve();
 	}
 	cataMotors.moveVelocity(0);
 }
 
 void load()
 {
-	lastIMUCheck = imu.get() + 90;
+	
 	while (limitSwitch.get_value() == 0) 
 	{
 		cataMotors.moveVoltage(12000);
-		drve(lastIMUCheck);
+		drve();
 	}
 	cataMotors.moveVelocity(0);
 	
@@ -135,7 +115,7 @@ void shortSideAutonRoute()
 	chassis->waitUntilSettled();
 	chassis->turnAngle(-47.5_deg);
 	chassis->waitUntilSettled();
-	chassis->moveDistance(4.75_ft);
+	chassis->moveDistance(4.625_ft);
 	chassis->waitUntilSettled();
 	chassis->setMaxVelocity(100);
 	chassis->turnAngle(123_deg);
@@ -232,7 +212,7 @@ void opcontrol()
 {
 
 
-	autonomous();
+	//autonomous();
 
 	while (true) 
 	{
