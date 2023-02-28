@@ -123,63 +123,7 @@ void competition_initialize()
  */
 void autonomous() 
 {
-	chassis->setState({-2.5_tile, 1.5_tile, 90_deg});
-	chassis->moveDistanceAsync(-1_ft);
-	pros::delay(250);
-	rollerMotor.moveRelative(250, 200);
-	pros::delay(250);
-	chassis->stop();
-	chassis->moveDistance(4_in);
-	intakeMotors.moveVoltage(12000);
-	pros::delay(50);
-	chassis->turnAngle(180_deg);
-	chassis->setMaxVelocity(100);
-	chassis->moveDistance(-1.5_ft);
-	intakeMotors.moveVelocity(0);
-	chassis->setMaxVelocity(200);
-	chassis->turnAngle(-55_deg);
-	chassis->moveDistanceAsync(-3_ft);
-	pros::delay(450);
-	rollerMotor.moveRelative(250, 200);
-	pros::delay(450);
-	chassis->stop();
-	chassis->moveDistance(6_in);
-	chassis->stop();
-	intakeMotors.moveVoltage(12000);
-	pros::delay(50);
-	chassis->turnAngle(-120_deg);
-	chassis->setMaxVelocity(125);
-	chassis->moveDistance(3.5_ft);
-
-	chassis->waitUntilSettled();
-	intakeMotors.moveVelocity(0);
-	pros::delay(50);
-	autonShoot();
-	pros::delay(25);
-	load();
 	
-	chassis->moveDistance(-1.625_ft);
-	chassis->setMaxVelocity(100);
-	chassis->turnAngle(-135_deg);
-	intakeMotors.moveVoltage(12000);
-	chassis->moveDistance(-1.5_ft);
-	chassis->turnAngle(-55_deg);
-	chassis->moveDistance(-2.5_ft);
-	chassis->turnAngle(120_deg);
-	chassis->moveDistance(0.5_ft);
-	chassis->turnAngle(-10_deg);
-	chassis->waitUntilSettled();
-	pros::delay(500);
-	intakeMotors.moveVelocity(0);
-	pros::delay(50);
-	autonShoot();
-	pros::delay(25);
-	load();
-	chassis->turnAngle(-10_deg);
-	chassis->moveDistance(-0.625_ft);
-	chassis->turnAngle(-120_deg);
-	intakeMotors.moveVoltage(12000);
-	chassis->moveDistance(-3_ft);
 
 
 
