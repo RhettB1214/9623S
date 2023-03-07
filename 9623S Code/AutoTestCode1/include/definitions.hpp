@@ -2,25 +2,28 @@
 
 
 //Drive Motor Definitions
-#define FL_DRIVE 1
-#define FR_DRIVE -2
-#define BL_DRIVE 3
-#define BR_DRIVE -4
+#define FL_DRIVE 6
+#define FR_DRIVE 8
+#define BL_DRIVE 5
+#define BR_DRIVE 7
 
 
 //Game object Motor Definitions
-#define CATA_MOTOR1 11
-#define CATA_MOTOR2 20
-#define INTAKE_MOTOR 7
-#define ROLLER_MOTOR 8
+#define LCATA_MOTOR 9
+#define RCATA_MOTOR 10
+#define INTAKE_MOTOR 1
+#define ROLLER_MOTOR 2
 
 
 //Sensor Definitions
-#define RIGHT_ODOM 9
-#define LEFT_ODOM 10
-#define BACK_ODOM 12
+#define RIGHT_ODOM 18
+#define LEFT_ODOM 20
+#define BACK_ODOM 19
+#define IMU_PORT 15
+
 
 //Three Wire Port Definitions
+#define THREE_WIRE_EXPANDER 21
 #define LIMIT_SWITCH 'A'
 #define ENDGAME_PISTON 'B'
 

@@ -3,14 +3,95 @@
 #include "initializations.hpp"
 #include "chassisBuilder.hpp"
 #include "functions.hpp"
+#include "pros/rtos.hpp"
 #include "variables.hpp"
-#include "gui.hpp"
 #include "auton.hpp"
+#include "gui.hpp"
 
 
 using namespace okapi;
 
+//This builder builds a odometry enabled chassis controller using OkapiLib
+std::shared_ptr<OdomChassisController> chassis = ChassisControllerBuilder()
+	.withMotors(
+		FLDrive, 
+		FRDrive,
+		BRDrive, 
+		BLDrive
+	)
+    .withDimensions(REGBOX, {{3.25_in, 9.5_in}, imev5GreenTPR})
+	.withSensors(
+		RotationSensor{LEFT_ODOM},
+        RotationSensor{RIGHT_ODOM},
+        RotationSensor{BACK_ODOM}
+	)
+	.withOdometry({{2.75_in, 12.5_in, 0_in, 2.75_in}, quadEncoderTPR})
+	.buildOdometry();
 
+
+//This casts the previously built chassis controller to one that can be ran asynchronously with other processes
+std::shared_ptr<HolonomicLib::AsyncHolonomicChassisController> controller = HolonomicLib::AsyncHolonomicChassisControllerBuilder(chassis)
+    // PID gains (must be tuned for your robot)
+    .withDistGains(
+        {0.05, 0.0, 0.00065, 0.0} // Translation gains
+    )
+    .withTurnGains(
+        {0.05, 0.0, 0.00065, 0.0} // Turn gains
+    )
+	.withDistSettleParameters(
+        0.5_in, // Max error
+        2.0_in / 1_s, // Max derivative
+        100_ms // Wait time
+    )
+    .withTurnSettleParameters(
+        5_deg, // Max error
+        20_deg / 1_s, // Max derivative
+        100_ms // Wait time
+    )
+    .build();
+	
+
+
+//This casts the first chassis controller to a X-Drive specific chassis model
+std::shared_ptr<XDriveModel> model = std::static_pointer_cast<XDriveModel> (chassis->getModel());
+
+
+void autonomousTurn(double targetDeg, float kP, float kI, float kD)
+{
+	double error;
+	double integral;
+	double lastError;
+	double derivative;
+	double totalError = 0;
+	double integralActiveZone = 15;
+	double power = targetDeg;
+	while (imu.get() != targetDeg)
+	{
+		if (error == 0)
+			{
+				lastError = 0;
+			}
+			if (abs(error) < integralActiveZone && error != 0)
+			{
+				totalError += error;
+			}else {
+				totalError = 0;
+			}
+			float finalAdjustment = (error * kP) + (totalError * kI) + ((error - lastError) * kD);
+			int AdjustedPower = power + finalAdjustment;
+			if (AdjustedPower > 200)
+			{
+				AdjustedPower = 200;
+			}
+			if (AdjustedPower < -200)
+			{
+				AdjustedPower = -200;
+			}
+			model->rotate(AdjustedPower);
+			pros::delay(5);
+	}
+	model->stop();
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -20,9 +101,7 @@ using namespace okapi;
  */
 void initialize() 
 {
-	endgamePiston.set_value(0);
-	cataMotors.setBrakeMode(AbstractMotor::brakeMode::hold);
-	load();
+	
 	
 }
 
@@ -47,7 +126,7 @@ void disabled()
  */
 void competition_initialize() 
 {
-	createButtons();
+	//createButtons();
 }
 
 /**
@@ -63,27 +142,27 @@ void competition_initialize()
  */
 void autonomous() 
 {
-	switch(autonID)
+	/*switch(autonID)
 	{
-		case 1:
+	case 1:
 			redClose();
 			break;
-		case 2:
+	case 2:
 			redFar();
 			break;
-		case 3:
+	case 3:
 			blueClose();
 			break;
-		case 4:
+	case 4:
 			blueFar();
 			break;
-		case 5:
+	case 5:
 			skills();
 			break;
-		case 0:
+	case 0:
 			opcontrol();
 			break;
-	}
+	}*/
 
 
 
@@ -113,106 +192,89 @@ void opcontrol()
 		master.getAnalog(ControllerAnalog::leftY),
 		master.getAnalog(ControllerAnalog::leftX),
 		master.getAnalog(ControllerAnalog::rightX),
-		controller->HolonomicLib::AsyncHolonomicChassisController::getPose().theta,
+		imu.get()*degree,
 		0.05);
 
 
-		//Cata Control
+		//Turn Function
 		if (master.getDigital(Y))
 		{
-			shoot();
-			pros::delay(125);
-			load();
+			autonomousTurn(90, kP, kI, kD);
 		}
 
-
-		//Roller Control
-		if (master.getDigital(R1))
+		//PID Tuning
+		if (master.getDigital(Up) && master.getDigital(R1))
 		{
-			rollerMotor.moveVoltage(12000);
+			kP += 0.01;
+			pros::delay(100);
 		}
-		if (master.getDigital(R2))
+		else if (master.getDigital(Down) && master.getDigital(R1))
 		{
-			rollerMotor.moveVoltage(-12000);
+			kP -= 0.01;
+			pros::delay(100);
 		}
-
-
-		//Intake Control
-        //Intake Variable Toggle Code
-        if(master.getDigital(L1) != lastKnownStateOfButtonIntake)
-	    // check if the button's state is different from its last known state (has there been a change?)
-	    {
-
-			lastKnownStateOfButtonIntake = master.getDigital(L1); //updates last know state of button for next loop
-
-			if(master.getDigital(L1))
-			//check the new state of the button (what just happened?)
-			{
-
-				//the button was just pressed, so toggle the state of the intake
-				if(shouldIntakeIntake == true)
-				{
-					shouldIntakeIntake = false;
-				}
-				else if(shouldIntakeIntake == false)
-				{
-					shouldIntakeIntake = true;
-				}
-				else
-				{
-					//the button was just released, but we dont care, so do nothing
-				}
-			}
-	    }
-
-        //Outtake Variable Toggle Code
-        if(master.getDigital(L2) != lastKnownStateOfButtonOuttake)
-        {
-			lastKnownStateOfButtonOuttake = master.getDigital(L2);
-
-			if(master.getDigital(L2))
-			{
-				if(shouldIntakeOuttake == true)
-				{
-					shouldIntakeOuttake = false;
-				}
-				else if(shouldIntakeOuttake == false)
-				{
-					shouldIntakeOuttake = true;
-				}
-				else
-				{
-					//the button was just released, but we dont care, so do nothing
-				}
-			}
-        }
-
-	    //Intake & Outake Controll Toggle Code
-	    if(shouldIntakeIntake == true)
-	    //Spins the Motor if shouldIntakeRun is equal to true
-	    {
-		    intakeMotor.moveVoltage(12000);
-            shouldIntakeOuttake = false;
-        }else if(shouldIntakeOuttake == true)
-        {
-            intakeMotor.moveVoltage(-12000);
-            shouldIntakeIntake = false;
-        }else if(shouldIntakeIntake == false && shouldIntakeOuttake == false)
-	    {
-			intakeMotor.moveVoltage(0);
-	    }else 
-	    {
-		    //shouldIntakeRun is neither true nor false, so do nothing
-	    }
-
-
-		//Endgame Control
-		if (master.getDigital(L1) && master.getDigital(L2) && master.getDigital(R1) && master.getDigital(R2))
+		else if (master.getDigital(Up) && master.getDigital(R2))
 		{
-			endgamePiston.set_value(1);
+			kI += 0.01;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Down) && master.getDigital(R2))
+		{
+			kI -= 0.01;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Up) && master.getDigital(L1))
+		{
+			kD += 0.01;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Down) && master.getDigital(L1))
+		{
+			kD -= 0.01;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Right) && master.getDigital(R1))
+		{
+			kP += 0.1;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Left) && master.getDigital(R1))
+		{
+			kP -= 0.1;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Right) && master.getDigital(R2))
+		{
+			kI += 0.1;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Left) && master.getDigital(R2)) 
+		{
+			kI -= 0.1;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Right) && master.getDigital(L1))
+		{
+			kD += 0.1;
+			pros::delay(100);
+		}
+		else if (master.getDigital(Left) && master.getDigital(L1))
+		{
+			kD -= 0.1;
+			pros::delay(100);
+		}
+		else if (master.getDigital(A))
+		{
+			pros::lcd::print(0, "kP: %f", kP);
+			pros::lcd::print(1, "kI: %f", kI);
+			pros::lcd::print(2, "kD: %f", kD);
+			pros::delay(100);
 		}
 
-		
+
+
+
+
 	}
 
 }
